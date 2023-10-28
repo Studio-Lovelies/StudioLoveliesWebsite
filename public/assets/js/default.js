@@ -1,6 +1,9 @@
 function handleSubmit(e) {
     e.preventDefault();
 
+    const button = document.querySelector('form button');
+    button.disabled = true;
+
     const email = document.getElementById('email').value.trim();
     const subject = document.getElementById('subject').value.trim();
     const message = document.getElementById('message').value.trim();
