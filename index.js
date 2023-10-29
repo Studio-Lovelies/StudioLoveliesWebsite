@@ -1,17 +1,18 @@
-const express = require("express");
-const nodemailer = require("nodemailer");
+import express, { json } from "express";
+import { createTransport } from "nodemailer";
+import { renderFile } from "ejs";
 
 var app = express();
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('public'));
 
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
-app.set('views', __dirname + '/public/views');
-app.engine('html', require('ejs').renderFile);
+app.use(json());
+app.set('views', 'public/views');
+app.engine('html', renderFile);
 app.set('view engine', 'html');
 
-const transporter = nodemailer.createTransport({
+const transporter = createTransport({
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
     auth: {
