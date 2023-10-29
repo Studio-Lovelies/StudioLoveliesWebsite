@@ -4,11 +4,13 @@
     "engines": {
         "node": "18.16.1"
     },
+    "type": "module",
     "description": "",
     "main": "index.js",
     "scripts": {
         "start": "node index.js",
-        "build": "node build.js"
+        "build": "node build.js",
+        "test": "node --test"
     },
     "repository": {
         "type": "git",
