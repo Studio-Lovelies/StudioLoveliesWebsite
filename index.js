@@ -83,7 +83,7 @@ app.post("/contact", (req, res) => {
                         "inline": true
                     }, {
                         "name": "Sent",
-                        "value": new Date().toLocaleString(),
+                        "value": `<t:${Math.round(Date.now()/1000)}:F>`,
                         "inline": true
                     }],
                 }]
