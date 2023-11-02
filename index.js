@@ -59,8 +59,57 @@ app.get("/version", (req, res) => {
 });
 
 app.post("/contact", (req, res) => {
-    if (req.query.sendEmail == "" || req.query.sendEmail == true) {
+    if (req.query.sendEmail != "" && req.query.sendEmail != true) {
+        return;
+    }
 
+    var discordPromise = new Promise((resolve, reject) => {
+        var options = {
+            'method': 'POST',
+            'url': process.env.DISCORD_WEBHOOK_URL,
+            'headers': {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "username": process.env.DISCORD_USERNAME,
+                "avatar_url": process.env.DISCORD_AVATAR_URL,
+                "embeds": [{
+                    "title": req.body.subject,
+                    "description": req.body.message,
+                    "color": 0x00adef,
+                    "fields": [{
+                        "name": "From",
+                        "value": req.body.email,
+                        "inline": true
+                    }, {
+                        "name": "Sent",
+                        "value": new Date().toLocaleString(),
+                        "inline": true
+                    }],
+                }]
+            })
+        };
+
+        fetch(options.url, options).then(res => {
+            if (res.status != 204) {
+                return reject({
+                    source: "discord",
+                    message: res.status + " Discord returned a non-204 status code",
+                    data: res
+                });
+            }
+
+            return resolve();
+        }).catch(err => {
+            return reject({
+                source: "discord",
+                message: res.status + " " + err,
+                data: res
+            });
+        });
+    });
+
+    var mailPromise = new Promise((resolve, reject) => {
         const mail = {
             from: process.env.SMTP_FROM,
             to: process.env.SMTP_TO,
@@ -70,20 +119,31 @@ app.post("/contact", (req, res) => {
 
         transporter.sendMail(mail, (err, data) => {
             if (err) {
-                return res.send({
-                    status: "error",
-                    error: "An internal server error occured",
+                return reject({
+                    source: "mail",
                     message: err,
                     data
                 });
-            } else {
-                return res.send({
-                    status: "ok",
-                    success: true
-                });
             }
+            
+            return resolve();
         });
-    }
+    });
+
+    Promise.all([discordPromise, mailPromise]).then(() => {
+        return res.status(200).json({
+            status: "ok",
+            success: true
+        });
+    }).catch(error => {
+        return res.status(500).json({
+            status: "error",
+            success: false,
+            error: "An internal server error occured",
+            message: error.message,
+            data: error.data
+        });
+    });
 });
 
 app.get("*", (req, res) => {
