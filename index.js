@@ -1,4 +1,4 @@
-import { hostPage } from "./host";
+import { hostPage } from "./host.js";
 const server = hostPage();
 
 process.on("uncaughtException", error => {
