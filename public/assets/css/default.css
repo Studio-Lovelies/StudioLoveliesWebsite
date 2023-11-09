@@ -57,16 +57,16 @@ a {
 }
 
 .logo:hover {
-    transform: scale(1.02);
+    transform: scale(1.02) translate(0, -0.2%);
 }
 
-.logo #studioLovelies-logo {
-    float: left;
-    margin: 5px 0 0 10px;
+.logo img {
+    height: calc(100%);
+    box-sizing: border-box;
+    padding: 5px 5px 5px 10px;
 }
 
 .logo #studioLovelies-text {
-    margin-left: 5px;
     display: inline-block;
     position: absolute;
 }
