@@ -13,6 +13,19 @@
             ],
             "program": "${workspaceFolder}/index.js",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run tests",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "args": [
+                "--test"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal"
         }
     ]
 }
