@@ -59,7 +59,7 @@ export const hostPage = () => {
     });
 
     app.post("/webhook", async (req, res) => {
-        if (req.body.includes("No player-facing changes")) {
+        if (JSON.stringify(req.body).includes("No player-facing changes")) {
             return;
         }
 
