@@ -39,7 +39,8 @@ const output = {
     ],
     "components": [],
     "actions": {},
-    "username": "v2024.09.27-441"
+    "username": "GitHub",
+    "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
 };
 
 const input =

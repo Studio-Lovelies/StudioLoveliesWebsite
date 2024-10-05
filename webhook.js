@@ -40,6 +40,7 @@ export const convert = (input) => {
         ],
         components: [],
         actions: {},
-        username: release.name
+        username: "GitHub",
+        avatar_url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
     };
 };
