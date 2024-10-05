@@ -77,7 +77,7 @@ export const hostPage = () => {
     
             return res.status(discordRes.status).send(discordRes.statusText);
         } catch (error) {
-            return res.status(500).send(error);
+            return res.status(500).send(error.message);
         }
     });
 
