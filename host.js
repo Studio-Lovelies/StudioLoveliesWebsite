@@ -61,11 +61,11 @@ export const hostPage = () => {
 
     app.post("/webhook", async (req, res) => {
         if (JSON.stringify(req.body).includes("No player-facing changes")) {
-            return;
+            return res.status(204).send();
         }
 
         if (req.body.action != "published") {
-            return;
+            return res.status(204).send();
         }
 
         const discordBody = convert(req.body);
