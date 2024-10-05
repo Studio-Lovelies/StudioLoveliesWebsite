@@ -58,6 +58,28 @@ export const hostPage = () => {
         return res.sendFile("version.html", { root: "public/views" });
     });
 
+    app.post("/webhook", async (req, res) => {
+        if (req.body.includes("No player-facing changes")) {
+            return;
+        }
+
+        const discordBody = convert(req.body);
+
+        try {
+            const discordRes = await fetch(process.env.DISCORD_RELEASE_WEBHOOK_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(discordBody)
+            });
+    
+            return res.status(discordRes.status).send(discordRes.statusText);
+        } catch (error) {
+            return res.status(500).send(error);
+        }
+    });
+
     app.post("/contact", (req, res) => {
         if (req.query.sendEmail != "" && req.query.sendEmail != true) {
             return;
