@@ -64,6 +64,10 @@ export const hostPage = () => {
             return;
         }
 
+        if (req.body.action != "published") {
+            return;
+        }
+
         const discordBody = convert(req.body);
 
         try {
